@@ -65,6 +65,7 @@ def generate_stream(
     context_len: int,
     stream_interval: int = 2,
     judge_sent_end: bool = False,
+    skip_special_tokens = True,
 ):
     if hasattr(model, "device"):
         device = model.device
@@ -187,7 +188,7 @@ def generate_stream(
 
             output = tokenizer.decode(
                 tmp_output_ids,
-                skip_special_tokens=True,
+                skip_special_tokens=skip_special_tokens,
                 spaces_between_special_tokens=False,
                 clean_up_tokenization_spaces=True,
             )

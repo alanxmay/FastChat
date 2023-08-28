@@ -1,5 +1,6 @@
 """Model adapter registration."""
 
+from functools import partial
 import math
 import os
 import sys
@@ -314,6 +315,7 @@ def get_generate_stream_function(model: torch.nn.Module, model_path: str):
     is_falcon = "rwforcausallm" in model_type
     is_codet5p = "codet5p" in model_type
     is_peft = "peft" in model_type
+    is_qwen = "qwen" in model_type
 
     if is_chatglm:
         return generate_stream_chatglm
@@ -348,6 +350,8 @@ def get_generate_stream_function(model: torch.nn.Module, model_path: str):
                 yield x
 
         return generate_stream_peft
+    elif is_qwen:
+        return partial(generate_stream, skip_special_tokens=False)
     else:
         return generate_stream
 
